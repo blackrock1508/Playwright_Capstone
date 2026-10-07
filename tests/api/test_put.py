@@ -6,12 +6,12 @@ from playwright.sync_api import Playwright
 BASE_DIR = Path(__file__).resolve().parents[2]
 logfolder = BASE_DIR / "logs"
 logfolder.mkdir(exist_ok=True)
-logfile = logfolder / "api.log"
+logfile = logfolder / "test_put.log"
 
 logger = logging.getLogger("LoginTestLogger")
 logger.setLevel(logging.INFO)
 logger.propagate = False
-handler = logging.FileHandler(logfile, mode="a")
+handler = logging.FileHandler(logfile, mode="w")
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)

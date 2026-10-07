@@ -13,11 +13,11 @@ import logging
 
 logfolder = Path("logs")
 logfolder.mkdir(exist_ok=True)
-logfile = logfolder / "login_test.log"
-logger= logging.getLogger("LoginTestLogger")
+logfile = logfolder / "invalid_login_test.log"
+logger= logging.getLogger("InvalidLoginTestLogger")
 logger.setLevel(logging.INFO)
 logger.propagate = False
-handler = logging.FileHandler(logfile, mode='a')
+handler = logging.FileHandler(logfile, mode='w')
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)   

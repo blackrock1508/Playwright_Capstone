@@ -12,11 +12,11 @@ from pathlib import Path
 
 logfolder = Path("logs")
 logfolder.mkdir(exist_ok=True)
-logfile = logfolder / "api.log"
+logfile = logfolder / "test_get.log"
 logger= logging.getLogger("LoginTestLogger")
 logger.setLevel(logging.INFO)
 logger.propagate = False
-handler = logging.FileHandler(logfile, mode='a')
+handler = logging.FileHandler(logfile, mode='w')
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)   
