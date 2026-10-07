@@ -84,11 +84,16 @@ jobs:
         to: mks.nit@gmail.com
         from: ${{secrets.USERNAME}}
         body: |
-          Hi Team,
-           Playwright is completed
-            Status: ${{job.status}}
-          Report:
-            ${{steps.upload-report.output.artifact-url}}
-            Open the workflow and download the pytest-html-report artficts 
-        attachments:  report.html 
+            Hi Team,
+            
+            Playwright execution has been completed.
+            
+            Status: ${{ job.status }}
+            
+            Report: ${{ steps.upload-report.output.artifact-url }} 
+            Please open the workflow and download the pytest-html-report artifact.
+        attachments: |
+                    report.html
+                    screenshots/*
+                    logs/*
    
