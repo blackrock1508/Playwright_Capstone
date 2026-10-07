@@ -69,4 +69,26 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: playwright-logs
-        path: logs/     
+        path: logs/ 
+        
+    - name: Send Email
+      if: always() 
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        secure: true
+        username: ${{secrets.USERNAME}}
+        password: ${{secrets.EMAIL_PASSWORD}}
+        subject: "Playwright Test Results-${{job.status}}"
+        to: mks.nit@gmail.com
+        from: ${{secrets.USERNAME}}
+        body: |
+          Hi Team,
+           Playwright is completed
+            Status: ${{job.status}}
+          Report:
+            ${{steps.upload-report.output.artifact-url}}
+            Open the workflow and download the pytest-html-report artficts 
+        attachments:  report.html 
+   
