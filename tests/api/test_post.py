@@ -5,6 +5,21 @@ from playwright.sync_api import Playwright
 import pytest
 from typing import TypedDict 
 
+import logging
+from pathlib import Path
+
+
+
+logfolder = Path("logs")
+logfolder.mkdir(exist_ok=True)
+logfile = logfolder / "api.log"
+logger= logging.getLogger("LoginTestLogger")
+logger.setLevel(logging.INFO)
+logger.propagate = False
+handler = logging.FileHandler(logfile, mode='a')
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)   
 
 class User(TypedDict):
     id: int
@@ -30,7 +45,7 @@ def test_post_user(playwright: Playwright):
     respose=request.post("/users", data=payload  )
     data=respose.json()
     assert respose.status==201
-    logger.info("Response status code:", respose.status)
+    logger.info(f"Response status code:{ respose.status}")
     logger.info(data)
     assert data["name"] == "John Doe"
 

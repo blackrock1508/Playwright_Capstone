@@ -1,11 +1,23 @@
-from typing import TypedDict
-from venv import logger
+import logging
+from pathlib import Path
 
 from playwright.sync_api import Playwright
-import pytest
-from typing import TypedDict 
+
+BASE_DIR = Path(__file__).resolve().parents[2]
+logfolder = BASE_DIR / "logs"
+logfolder.mkdir(exist_ok=True)
+logfile = logfolder / "api.log"
+
+logger = logging.getLogger("LoginTestLogger")
+logger.setLevel(logging.INFO)
+logger.propagate = False
+handler = logging.FileHandler(logfile, mode="a")
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 def test_put_api(playwright: Playwright):
+    
     # Payload to update the resource
     payload = {
         "id": 1,
