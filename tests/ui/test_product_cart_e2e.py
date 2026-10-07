@@ -2,7 +2,7 @@ import json
 
 from playwright.sync_api import expect
 import pytest
-from trio import Path
+from pathlib import Path
 from pages.login_pages import swaglab_Login
 from pages.login_pages import invetory_page
 
