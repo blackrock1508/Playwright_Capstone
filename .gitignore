@@ -1,8 +1,5 @@
-__pycache__/
 .pytest_cache/
 logs/
 video/
 screenshots/
 test-results/
-allure
-traces
