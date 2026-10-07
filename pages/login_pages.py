@@ -36,10 +36,12 @@ class swaglab_Login:
 class invetory_page:
     def __init__(self, page):
         self.page = page
-        self.inventory_item = page.get_by_test_id("inventory-item-name").filter(has_text="Sauce Labs Backpack")
+        self.inventory_item =  page.locator("[data-test=\"item-4-title-link\"]")
+        #self.inventory_item =page.locator("[data-test=\"back-to-products\"]")
         self.logout_link = page.locator("[data-test=\"logout-sidebar-link\"]")
         self.Open_menu = page.get_by_role("button", name="Open Menu")
         self.close_menu = page.get_by_role("button", name="Close Menu")  # Adjust the selector  
+        
     def add_to_cart(self):
         self.page.get_by_role("button", name="Add to cart").click()  # Adjust the selector based on the actual "Add to Cart" button element    
     def remove_from_cart(self):

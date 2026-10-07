@@ -11,14 +11,25 @@ with open(Path("testdata/login_data.json")) as f:
     login_data = json.load(f)
 import logging
 
+logfolder = Path.cwd()/ "logs"
+logfolder.mkdir(exist_ok=True)
+logfile = logfolder / "test_multiwindow.log"
+logger= logging.getLogger("MultiWindowTest")
+logger.setLevel(logging.INFO)
+logger.propagate = False
+handler = logging.FileHandler(logfile, mode='w')
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
 
 logfolder = Path("logs")
 logfolder.mkdir(exist_ok=True)
-logfile = logfolder / "login_test.log"
-logger= logging.getLogger("LoginTestLogger")
+logfile = logfolder /"test_product_cart_e2e.log"
+logger= logging.getLogger("test_product_cart_e2e")
 logger.setLevel(logging.INFO)
 logger.propagate = False
-handler = logging.FileHandler(logfile, mode='a')
+handler = logging.FileHandler(logfile, mode='w')
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)   
@@ -53,7 +64,6 @@ def test_login_page(login_data,shared_page):
     except Exception as e:
         logger.error(f"Unexpected error occurred: {e}")
         raise
-    logger.info("Login test completed.")
 
 pytest.mark.smoke    
 def test_validate_products(shared_page):
@@ -67,7 +77,7 @@ def test_validate_products(shared_page):
         inventory_Page.click_close_menu()
         logger.info("Closed the menu.")
     except AssertionError as e:
-        logger.error("Product validation test failed.")
+        logger.error(f"Product validation test failed.{str(e)}")
         raise
     except Exception as e:
         logger.error(f"Unexpected error occurred during product validation: {e}")
@@ -104,6 +114,31 @@ def test_add_to_cart_and_validate_count(shared_page):
         logger.error(f"Unexpected error occurred during add to cart test: {e}")
         raise
     logger.info("Add to cart test completed.")
+@pytest.mark.smoke
+def test_remove_product(shared_page):
+    try:
+        logger.info("Starting - Remove product from inventory.")
+        inventory_Page = invetory_page(shared_page)
+        cart_count = inventory_Page.get_cart_count()  # Assuming this method returns the current cart count
+        if cart_count==1:
+            inventory_Page.remove_from_cart()
+            logger.info("Clicked on Remove button.")
+            cart_count = inventory_Page.get_cart_count()  # Assuming this method returns the current cart count
+            logger.info("Check now product count in cart.")
+            logger.info(f"Product count in cart after remove:{cart_count}.")
+
+            assert cart_count == 0, f"Cart count is {cart_count}, expected {cart_count}."
+        
+        else:
+            logger.info("No product removed; cart is already empty.")
+            assert cart_count == 1, f"Cart count is {cart_count}, expected 1."
+
+    except AssertionError as e:
+        logger.error(f"Remove product from cart validation failed {str(e)}.")
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error occurred during Remove product from cart validation : {e}")
+        raise  
 
 @pytest.mark.smoke
 def test_logout(shared_page):
